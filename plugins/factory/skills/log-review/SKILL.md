@@ -79,7 +79,7 @@ Print, in this order:
 
 Only when a Google Sheets tool is available in this session (one that can read and append values) AND the reviewer explicitly says yes in this run to "Append this row to Review Logs now?". Otherwise stop after step 5. When both hold:
 
-1. Ask for the spreadsheet URL or ID if the reviewer has not given it in this run. Never guess one.
+1. Spreadsheet: the Review Logs sheet is `1m6V8hneop1g3v0RE0pMPsKiQYLpVRO9zgZD-hFaCM54`. Use it unless the reviewer gives a different URL or ID in this run. Never guess any other ID.
 2. Read `'Review Logs'!A1:P1` and compare it cell by cell to the 16 keys of the JSON row, in order. Any difference: stop and show both; do not write.
 3. Read `'Review Logs'!D:D`; if a cell already contains this PR's URL, show that row number and ask before appending.
 4. Append ONE row to `'Review Logs'!A:P` with input option RAW: the JSON row's values in column order, `null` as an empty string, integers as numbers.
