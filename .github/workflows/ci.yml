@@ -1,0 +1,80 @@
+# CI for the onion-factory repo itself: schemas, eval data, plugin layout and unit tests.
+# The one all-checks command a contributor runs locally is the same pair of commands:
+#   python3 tools/validate.py && python3 -m unittest discover -s tests -v
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  # Superseded PR runs are cancelled; runs on pushed branches (main included) always finish.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  checks:
+    name: checks (python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        # 3.9 is the oldest Python the tooling must run on; 3.12 catches newer-version breakage.
+        python-version: ["3.9", "3.12"]
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # Runtime code is standard library only; jsonschema is used here so validate.py runs
+      # full Draft 2020-12 validation instead of its built-in fallback.
+      - name: Install validation dependency
+        run: python -m pip install --disable-pip-version-check jsonschema
+
+      - name: Validate schemas, eval data and plugin layout
+        run: python tools/validate.py
+
+      - name: Unit tests
+        run: python -m unittest discover -s tests -v
+
+  plugin-validate:
+    # Claude Code's own manifest checks. `claude plugin validate` runs offline and needs no API
+    # key or login (checked with claude 2.1.319 under an empty HOME). Optional: it is advisory
+    # while the CLI's checks evolve, so a failure here does not fail the run.
+    name: claude plugin validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Claude Code CLI
+        # Pinned so a CLI release cannot change the result without a commit here.
+        run: npm install --global --no-fund --no-audit @anthropic-ai/claude-code@2.1.319
+
+      - name: Validate marketplace manifest
+        run: claude plugin validate .
+
+      - name: Validate plugins
+        run: |
+          status=0
+          for dir in plugins/*/; do
+            echo "::group::claude plugin validate ${dir}"
+            claude plugin validate "${dir}" || status=1
+            echo "::endgroup::"
+          done
+          exit "${status}"

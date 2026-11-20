@@ -1,0 +1,17 @@
+# CODEOWNERS for a project the core project depends on.
+# Copy to .github/CODEOWNERS, replace the <placeholders>, delete unused lines.
+#
+# - One line per connection point listed in CLAUDE.md under
+#   "Connection points with the core project". Keep the two lists in step.
+# - The LAST matching line wins, so keep the default owner line first.
+# - Owners must have write access to this repo. Use @org/team or @username.
+# - CODEOWNERS only blocks merges when the main-branch ruleset has
+#   "Require review from Code Owners" turned on.
+
+# Default owner for everything else (optional).
+*                         @<org>/<project-team>
+
+# Connection points with the core project: the core owner reviews these.
+/<path/to/api-contracts>/ @<org>/<core-team>
+/<path/to/schema.sql>     @<org>/<core-team>
+/<path/to/shared-config>  @<org>/<core-team>

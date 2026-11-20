@@ -1,0 +1,17 @@
+{
+  "name": "onion-factory",
+  "description": "Tooling for the team's AI code-review rollout: hand and automatic PR review against REVIEW.md, Review Logs rows, and repo bootstrap.",
+  "owner": {
+    "name": "NinoP-Dev",
+    "url": "https://github.com/NinoP-Dev"
+  },
+  "plugins": [
+    {
+      "name": "factory",
+      "source": "./plugins/factory",
+      "description": "Review pull requests against CLAUDE.md and REVIEW.md, log reviews to the Review Logs sheet, and bootstrap a repo for AI review.",
+      "category": "development",
+      "tags": ["code-review", "pull-requests", "review-md"]
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+Reviewer,Date Reviewed,Ticket,PR,Complexity,Reviewed By Claude AI,Recommendation,Accepted Recommendation, Actual Time (mins) ,Est. Time w/o Claude (min),Notes,Recommendation Severity,Findings: Both Found,"Findings: AI Only, Real","Findings: AI Only, False",Findings: Human Only
+Ana,Apr 01 2026,ABC-101,#11 - Add widget cache (https://github.com/acme/widgets/pull/11),Low,No,NO,NO,30,30,Synthetic row: reviewed by hand
+Ben,Apr 08 2026,ABC-102,"#12 - Fix gear ratio
+(https://github.com/acme/gears/pull/12)",Medium,No,NO,NO, 45 ,45
+Ana/Ben,"May 13, 2026",ABC-103,#13 - Widget export (https://github.com/acme/widgets/pull/13),High,No,NO,NO,No Claude AI review,60,,
+Ben,Sept 23 2026,ABC-104,#14 - Retry widget sync (https://github.com/acme/widgets/pull/14),Medium,Yes,YES,YES,20,40,Synthetic note,Minor,,,,
+Ana,"Aug 1, 2026",ABC-105,#15 - Widget docs (https://github.com/acme/widgets/pull/15),Low,Yes,YES,NO,   ,20,,Nit
+Ana,"Oct 02, 2026",ABC-106,#16 - Cache eviction (https://github.com/acme/widgets/pull/16),Medium,Yes,YES,YES,15,30,,Important,1,2,1,0
+Reviewer,Date Reviewed,Ticket,PR,Complexity,Reviewed By Claude AI,Recommendation,Accepted Recommendation,Actual Time (mins),Est. Time w/o Claude (min),Notes,Recommendation Severity,Findings: Both Found,"Findings: AI Only, Real","Findings: AI Only, False",Findings: Human Only
+Ben,Oct 09 2026,ABC-107 / ABC-108,#17 - Widget pricing (https://github.com/acme/widgets/pull/17),High,Yes,YES,YES,25,50,,Nit, 0 ,1,0,2
+,,,,,,,,,,
+Ana,"Nov 19, 2026",N/A,#18 - Gear lint (https://github.com/acme/gears/pull/18),Low,Yes,YES,NO,10,15,,Nit,0,0,1,1
+Ben,"Nov 19, 2026",ABC-110,#19 - Widget search (https://github.com/acme/widgets/pull/19),Medium,Yes,NO,NO,,25,,,2,0,0,
+Cara,"Nov 19, 2026",ABC-110,#19 - Widget search (https://github.com/acme/widgets/pull/19),Medium,Yes,NO,NO,12

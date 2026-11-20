@@ -1,0 +1,13 @@
+{
+  "name": "factory",
+  "displayName": "Onion Factory",
+  "version": "0.1.0",
+  "description": "AI code review where a person still approves every merge. /factory:review-pr reviews a branch or pull request against the repo's CLAUDE.md, REVIEW.md and .claude/rules, and can post findings as inline COMMENT reviews; /factory:log-review prepares a Review Logs row; /factory:bootstrap-repo sets a repo up for review (Stage 0).",
+  "author": {
+    "name": "NinoP-Dev",
+    "url": "https://github.com/NinoP-Dev"
+  },
+  "homepage": "https://github.com/NinoP-Dev/onion-factory",
+  "repository": "https://github.com/NinoP-Dev/onion-factory",
+  "keywords": ["code-review", "pull-request", "review-md", "claude-md", "github"]
+}

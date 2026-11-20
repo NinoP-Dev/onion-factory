@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/NinoP-Dev/onion-factory/schemas/eval-result.schema.json",
+  "title": "Review eval run",
+  "description": "One run of the eval set, written by evals/review/run_evals.py to evals/review/results/<project>/<run_id>.json.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["run_id", "project", "started_at", "standards", "threshold", "score", "passed", "cases"],
+  "properties": {
+    "run_id": { "type": "string", "description": "<UTC timestamp YYYYMMDDTHHMMSSZ>-<first 7 chars of the REVIEW.md blob sha, or 'none'>." },
+    "project": { "type": "string", "minLength": 1 },
+    "started_at": { "type": "string", "format": "date-time" },
+    "standards": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repo_path", "standards_ref", "claude_md_sha", "review_md_sha"],
+      "properties": {
+        "repo_path": { "type": "string" },
+        "standards_ref": { "type": "string", "description": "The commit whose CLAUDE.md, REVIEW.md and .claude/rules were laid over every case. Usually the tip of the default branch." },
+        "claude_md_sha": { "type": ["string", "null"] },
+        "review_md_sha": { "type": ["string", "null"] }
+      }
+    },
+    "model": { "type": ["string", "null"] },
+    "threshold": { "type": "integer", "minimum": 0, "description": "Cases that must be found to pass. 8 by default." },
+    "score": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["found", "total", "errors"],
+      "properties": {
+        "found": { "type": "integer", "minimum": 0 },
+        "total": { "type": "integer", "minimum": 0, "description": "Cases that ran without error." },
+        "errors": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "passed": { "type": "boolean", "description": "found >= threshold and errors == 0." },
+    "cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["case_id", "base", "head", "found", "findings"],
+        "properties": {
+          "case_id": { "type": "string" },
+          "base": { "type": "string" },
+          "head": { "type": "string" },
+          "found": { "type": ["boolean", "null"], "description": "null when the case errored." },
+          "matched_finding_ids": { "type": "array", "items": { "type": "string" } },
+          "judge_reasoning": { "type": "string" },
+          "findings": { "type": "array", "items": { "$ref": "finding.schema.json" } },
+          "other_findings_verdicts": {
+            "type": "object",
+            "description": "Filled in by the team afterwards for the Stage 1 noise gate: finding id -> 'useful' | 'noise'.",
+            "additionalProperties": { "enum": ["useful", "noise"] }
+          },
+          "duration_s": { "type": "number", "minimum": 0 },
+          "error": { "type": ["string", "null"] }
+        }
+      }
+    }
+  }
+}

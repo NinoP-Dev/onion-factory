@@ -1,0 +1,13 @@
+{
+  "id": "bulk-discount-double-applied",
+  "repo": "acme/widgets",
+  "pr": 101,
+  "known_problem": {
+    "summary": "apply_discounts() runs bulk_discount() after coupon_discount() but both read order.subtotal instead of the running total, so an order with a coupon and a bulk tier is undercharged (100.00 with 10% + 10% totals 80.00, not 81.00).",
+    "files": ["src/widgets/pricing.py"],
+    "severity": "Important"
+  },
+  "source": "bug-reached-users",
+  "reference": "WID-204",
+  "added": "2026-11-20"
+}

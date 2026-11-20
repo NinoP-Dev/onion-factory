@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/NinoP-Dev/onion-factory/schemas/finding.schema.json",
+  "title": "Review finding",
+  "description": "One problem the review agent reports. Severity words come from REVIEW.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "severity", "file", "line", "title", "body"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^F\\d+$", "description": "F1, F2, ... in the order reported. Stable within one review." },
+    "severity": { "enum": ["Important", "Nit", "Pre-existing"], "description": "Important: bug, security hole or break for the core project; fix before merge. Nit: worth fixing, not blocking; at most five per review. Pre-existing: a problem not introduced by this change; becomes a Jira ticket." },
+    "file": { "type": "string", "minLength": 1, "description": "Path relative to the repo root." },
+    "line": { "type": "integer", "minimum": 1, "description": "Line in the new version of the file (the right side of the diff). For Pre-existing findings, the line as it is at the head commit." },
+    "end_line": { "type": "integer", "minimum": 1 },
+    "title": { "type": "string", "minLength": 1, "maxLength": 120, "description": "The claim in one line." },
+    "body": { "type": "string", "minLength": 1, "description": "What goes wrong, for which input or state, and the smallest fix. Markdown." },
+    "rule": { "type": "string", "description": "The REVIEW.md 'Always check' rule (or CLAUDE.md section) this finding enforces, quoted briefly. Empty when none applies." }
+  }
+}

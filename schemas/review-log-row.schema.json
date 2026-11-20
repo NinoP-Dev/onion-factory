@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/NinoP-Dev/onion-factory/schemas/review-log-row.schema.json",
+  "title": "Review Logs row",
+  "description": "One row of the 'Review Logs' tab of the Ancillary Code Reviews sheet. Property names are the sheet's column headers, verbatim and in column order (A to P). A tool that emits a row for pasting writes the values tab-separated in exactly this order.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "Reviewer", "Date Reviewed", "Ticket", "PR", "Complexity", "Reviewed By Claude AI",
+    "Recommendation", "Accepted Recommendation", "Actual Time (mins)"
+  ],
+  "properties": {
+    "Reviewer": { "type": "string", "minLength": 1, "description": "First name of the human reviewer. Two reviewers are written 'A/B'." },
+    "Date Reviewed": { "type": "string", "pattern": "^[A-Z][a-z]{2} \\d{2}, \\d{4}$", "description": "Written as 'Nov 19, 2026'. Older rows in the sheet use other spellings; readers must tolerate them, writers must use this one." },
+    "Ticket": { "type": "string", "description": "Jira key, e.g. 'ABC-123'. Several keys are joined with ' / '. 'N/A' when there is none." },
+    "PR": { "type": "string", "pattern": "^#\\d+ - .+ \\(https://github\\.com/[^/]+/[^/]+/pull/\\d+\\)$", "description": "'#<number> - <title> (<url>)'. The repo (owner/name) is read from the URL." },
+    "Complexity": { "enum": ["Low", "Medium", "High"] },
+    "Reviewed By Claude AI": { "enum": ["Yes", "No"] },
+    "Recommendation": { "enum": ["YES", "NO"], "description": "YES when the AI review recommended at least one change." },
+    "Accepted Recommendation": { "enum": ["YES", "NO"], "description": "YES when at least one recommended change was applied (or made moot) before or after merge." },
+    "Actual Time (mins)": { "type": "integer", "minimum": 0, "description": "Minutes the human reviewer spent. Older rows hold text such as 'No Claude AI review'; readers must treat non-numbers as missing." },
+    "Est. Time w/o Claude (min)": { "type": ["integer", "null"], "minimum": 0, "description": "A guess. No gate uses it." },
+    "Notes": { "type": "string" },
+    "Recommendation Severity": { "type": "string", "description": "Highest severity among the AI findings: 'Important', 'Nit', 'Pre-existing', or '' when there were none. Older rows may hold other words such as 'Minor'." },
+    "Findings: Both Found": { "type": ["integer", "null"], "minimum": 0, "description": "Problems the AI and the human reviewer both found." },
+    "Findings: AI Only, Real": { "type": ["integer", "null"], "minimum": 0, "description": "AI findings the human did not find and agreed were real." },
+    "Findings: AI Only, False": { "type": ["integer", "null"], "minimum": 0, "description": "AI findings judged false (wrong, or noise that REVIEW.md says not to flag)." },
+    "Findings: Human Only": { "type": ["integer", "null"], "minimum": 0, "description": "Problems the human found that the AI missed. Each one should become a REVIEW.md rule and an eval case." }
+  },
+  "x-column-order": [
+    "Reviewer", "Date Reviewed", "Ticket", "PR", "Complexity", "Reviewed By Claude AI",
+    "Recommendation", "Accepted Recommendation", "Actual Time (mins)", "Est. Time w/o Claude (min)",
+    "Notes", "Recommendation Severity", "Findings: Both Found", "Findings: AI Only, Real",
+    "Findings: AI Only, False", "Findings: Human Only"
+  ]
+}

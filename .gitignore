@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Claude Code: personal settings and agent worktrees
+.claude/settings.local.json
+.claude/worktrees/
+
+# Review payload the Action template writes (in case it is run locally)
+.factory-review.json
+
+# Local Review Logs exports: real sheet data never goes in this repo
+review-logs*.csv
+!tests/fixtures/review-logs.csv
+
+# OS and editor
+.DS_Store
+*.swp
+.idea/
+.vscode/

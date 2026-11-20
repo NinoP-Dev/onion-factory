@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/NinoP-Dev/onion-factory/schemas/eval-case.schema.json",
+  "title": "Review eval case",
+  "description": "One past change where the team knows what was wrong. Ten of these make a project's eval set (evals/review/cases/<project>/<id>.json).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "repo", "known_problem", "source"],
+  "oneOf": [
+    { "required": ["pr"] },
+    { "required": ["base", "head"] }
+  ],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$", "description": "Unique within the project; also the file name without .json." },
+    "repo": { "type": "string", "pattern": "^[^/]+/[^/]+$", "description": "owner/name on GitHub." },
+    "pr": { "type": "integer", "minimum": 1, "description": "A merged pull request. The runner resolves base = first parent of its merge commit, head = its merge commit." },
+    "base": { "type": "string", "minLength": 1, "description": "Commit to diff from, when there is no pull request or its merge commit is unsuitable (rebase merges)." },
+    "head": { "type": "string", "minLength": 1, "description": "Commit to diff to. The review sees the code as it was here." },
+    "known_problem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["summary"],
+      "properties": {
+        "summary": { "type": "string", "minLength": 10, "description": "What was wrong, specifically enough that a judge can tell whether a finding is the same problem." },
+        "files": { "type": "array", "items": { "type": "string" }, "description": "Where the problem lives, relative to the repo root." },
+        "severity": { "enum": ["Important", "Nit"], "description": "How REVIEW.md would grade it. Defaults to Important." }
+      }
+    },
+    "source": { "enum": ["bug-reached-users", "human-only-finding", "other"], "description": "Why we know: a bug that reached users, or a Review Logs row with a Human Only finding." },
+    "reference": { "type": "string", "description": "Where the evidence is: a Jira key, an incident link, or the Review Logs PR cell." },
+    "added": { "type": "string", "format": "date", "description": "YYYY-MM-DD the case joined the set." }
+  }
+}

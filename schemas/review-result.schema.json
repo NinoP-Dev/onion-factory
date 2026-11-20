@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/NinoP-Dev/onion-factory/schemas/review-result.schema.json",
+  "title": "Review result",
+  "description": "What the factory:review-pr skill emits in JSON mode, and what the eval runner reads.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["repo", "base", "head", "standards", "findings", "summary"],
+  "properties": {
+    "repo": { "type": "string", "pattern": "^[^/]+/[^/]+$", "description": "owner/name, or 'local/<directory name>' ('local/unknown' if even that fails) when there is no GitHub remote." },
+    "pr": { "type": ["integer", "null"], "minimum": 1 },
+    "ticket": { "type": ["string", "null"], "description": "Jira key found in the PR title or branch name." },
+    "base": { "type": "string", "minLength": 1, "description": "Commit SHA or ref the diff starts from." },
+    "head": { "type": "string", "minLength": 1, "description": "Commit SHA or ref the diff ends at." },
+    "standards": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claude_md", "review_md"],
+      "properties": {
+        "claude_md": { "type": "boolean", "description": "A CLAUDE.md was found and read." },
+        "review_md": { "type": "boolean", "description": "A REVIEW.md was found and read." },
+        "rules": { "type": "array", "items": { "type": "string" }, "description": ".claude/rules files that applied to the changed paths." }
+      }
+    },
+    "findings": { "type": "array", "items": { "$ref": "finding.schema.json" } },
+    "summary": { "type": "string", "description": "Two or three sentences: what the change does and the verdict." },
+    "posted": { "type": "boolean", "description": "True when the findings were posted to the pull request as a COMMENT review." }
+  }
+}
